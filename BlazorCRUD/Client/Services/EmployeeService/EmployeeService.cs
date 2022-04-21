@@ -26,13 +26,9 @@ namespace BlazorCRUD.Client.Services.EmployeeService
                 var test2 = resultTest.GetType().Name;
                 var test3 = resultTest.GetType().Name;
             }
-
-            //var result = await _httpClient.GetFromJsonAsync<List<EmployeeDTO>>(@"https://localhost:44326/api/employees");
             var result = await _httpClient.GetFromJsonAsync<List<Employee>>("api/employees");
             if (result != null)
                 Console.WriteLine(result);
-                //Employees = result;
-                //Employees = new List<Employee>(result.Select(empDTO=>new Employee(empDTO)));
         }
 
         public async Task<Employee> GetEmployee(int id)
@@ -48,28 +44,18 @@ namespace BlazorCRUD.Client.Services.EmployeeService
 
         public async Task<Employee> CreateEmployee(Employee employee)
         {
-            
-
-            //var result = await _httpClient.PostAsJsonAsync<EmployeeDTO>("api/employees", new EmployeeDTO(employee));
             var result = await _httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
-            //GetEmployees();
 
             var actionResultCode = result.StatusCode;
             if (actionResultCode == System.Net.HttpStatusCode.BadRequest) { } //validation failed
 
             return await result.Content.ReadFromJsonAsync<Employee>();
-            //return null;
         }
 
         public async Task<Employee> UpdateEmployee(int id, Employee employee)
         {
-            //var result = await _httpClient.PutAsJsonAsync<EmployeeDTO>($"api/employees/{id}", new EmployeeDTO(employee));
             var result = await _httpClient.PutAsJsonAsync<Employee>($"api/employees/{id}", employee);
-            //GetEmployees(); //updates the Employees property
             return null;
-            //return result.Content.ReadFromJsonAsync<Emloyee>();
-            //return result.Content.ReadFromJsonAsync<Employee?>();
-            //return await result.Result.Content.ReadFromJsonAsync<Employee>();
         }
 
         public async Task DeleteEmployee(int id)

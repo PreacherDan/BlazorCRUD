@@ -100,15 +100,3 @@ else
         NavigationManager.NavigateTo("/employees");
     }
 }
-
-@*
-    <ul>
-        <li>Dept: @employee.Department.Name</li>
-        <li>Salary:@employee.Salary</li>
-    </ul>
-
-//employee = EmployeeService.Employees.SingleOrDefault<BlazorCRUD.Shared.Employee>(e => e.ID == ID);
-//this.employee = EmployeeService.GetEmployee(ID).Result; //if ID is initialized
-            //employee = await new HttpClient().GetFromJsonAsync<BlazorCRUD.Shared.Employee>($"api/employees/{(int)ID}");
-        //@using BlazorCRUD.Shared
-*@

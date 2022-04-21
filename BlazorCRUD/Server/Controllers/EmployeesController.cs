@@ -22,16 +22,14 @@ namespace BlazorCRUD.Server.Controllers
 
         [HttpGet] //[Route("api/employees")]
         public async Task<ActionResult<List<Employee>>> GetEmployees() //=> await _context.Employees.ToListAsync<Employee>();
-        {           
-            //var empDTOs = (await _context.Employees.Include(e => e.Department).ToListAsync<Employee>()).Select(e => new EmployeeDTO(e));
+        {
             var emps = await _context.Employees.Include(e => e.Department).ToListAsync<Employee>();
 
-            foreach (var emp in emps) emp.Department = _context.Departments.Single(d => d.ID == emp.DepartmentID);            
-
+            foreach (var emp in emps) emp.Department = _context.Departments.Single(d => d.ID == emp.DepartmentID);
             return Ok(emps);
         }
         
-        [HttpGet("{id}")] // turns into "/api/employees/{id} //[Route("api/employees/{id}")]
+        [HttpGet("{id}")] // turns into "/api/employees/{id}
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
             var empFromDb = await _context.Employees.Include(e => e.Department).SingleOrDefaultAsync(e => e.ID == id);
@@ -64,7 +62,6 @@ namespace BlazorCRUD.Server.Controllers
 
             empFromDb.Name = employee.Name;
             empFromDb.Surname = employee.Surname;
-           // empFromDb.Department = employee.Department;
             empFromDb.DepartmentID = employee.DepartmentID;
             empFromDb.Salary = employee.Salary;
 
@@ -72,7 +69,7 @@ namespace BlazorCRUD.Server.Controllers
             return Ok(empFromDb);
         }
 
-        [HttpDelete("{id}")] //[Route("api/employees/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteEmployee(int id)
         {
             var empToDelete = await _context.Employees.SingleOrDefaultAsync<Employee>(e => e.ID == id);
