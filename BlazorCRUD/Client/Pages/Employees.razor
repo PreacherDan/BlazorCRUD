@@ -1,0 +1,72 @@
+﻿@page "/employees"
+@inject IEmployeeService EmployeeService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRunTime
+@implements IDisposable
+
+<PageTitle>Employees</PageTitle>
+
+<h1>Employees</h1>
+
+@if (!EmployeeService.Employees.Any())
+{
+    <h2>Loading...</h2>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Surname</th>
+            <th>Salary</th>
+            <th>Department</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        @foreach(var emp in EmployeeService.Employees)
+        {
+            <tr>
+                <td>@emp.Name</td>
+                <td>@emp.Surname</td>
+                <td>@emp.Salary</td>
+                <td>@emp.Department.Name</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="(() => showEmployee(emp.ID))"> <i class="oi oi-pencil"></i> </button>
+                    <button class="btn btn-primary" @onclick="(() => deleteEmployee(emp.ID))"> <i class="oi oi-trash"></i> </button>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<buton class="btn btn-primary" @onclick="(()=>createEmployee())">Add New Employee</buton>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        EmployeeService.OnChange += StateHasChanged;
+        await EmployeeService.GetEmployees();
+    }
+
+    public void Dispose()
+    {
+        EmployeeService.OnChange -= StateHasChanged;
+    }
+
+    private void showEmployee(int id)
+    {
+        NavigationManager.NavigateTo($"employee/{id}");
+    }
+
+    private void createEmployee()
+    {
+        NavigationManager.NavigateTo("/employee");
+    }
+
+    private async void deleteEmployee(int id)
+    {
+        await EmployeeService.DeleteEmployee(id);
+        StateHasChanged();
+    }
+}
